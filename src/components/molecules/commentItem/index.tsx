@@ -5,15 +5,15 @@ import DeleteButton from "../../atoms/deleteButton";
 
 interface ICommentItem {
     commentId: string;
-    text: string;
+    commentText: string;
     handleDeleteComment: MouseEventHandler<HTMLButtonElement>;
 }
 
-const CommentItem: React.FC<ICommentItem> = ({handleDeleteComment, text}) => {
+const CommentItem: React.FC<ICommentItem> = ({handleDeleteComment, commentText, commentId}) => {
   return (
-    <Box>
+    <Box key={commentId}>
       <Typography variant="body1" gutterBottom>
-        {text}
+        {commentText}
         <DeleteButton handleDelete={handleDeleteComment} />
       </Typography>
     </Box>

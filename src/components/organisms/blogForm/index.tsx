@@ -1,50 +1,49 @@
-import React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import BlogItem from "../../molecules/blogItem/index";
 import Form from "../../organisms/form/index";
-import DeleteButton from "../../atoms/deleteButton/index";
 import CommentItem from "../../molecules/commentItem/index";
-
-interface IComment {
-  id: string;
-  text: string;
-}
+import { IComment } from "../../interfaces/index";
 
 interface IBlogForm {
-  text: string;
-  id: string;
+  postText: string;
+  postId: string;
   comments: IComment[];
-  commentValue: string;
-  handleAddComment: (postId: string) => void;
-  setCommentValue: (newValue: string) => void;
+  handleAddComment: (postId: string, text: string) => void;
   handleDeleteBlogPost: (postId: string) => void;
   handleDeleteComment: (postId: string, commentId: string) => void;
 }
 
 const BlogForm: React.FC<IBlogForm> = ({
-  text,
-  id,
+  postText,
+  postId,
   comments,
-  commentValue,
   handleAddComment,
   handleDeleteBlogPost,
   handleDeleteComment,
-  setCommentValue,
 }) => {
+  
+  const [commentValue, setCommentValue] = useState("");
+
+  const createComment = () => {
+    handleAddComment(postId, commentValue);
+    setCommentValue("");
+  };
+
   return (
-    <Box>
-      <BlogItem text={text} handleDelete={() => handleDeleteBlogPost(id)} />
+    <Box key={postId}>
+      <BlogItem postText={postText} handleDelete={() => handleDeleteBlogPost(postId)} key={postId} />
       <Form
-        handleAdd={() => handleAddComment(id)}
+        handleAdd={() => createComment()}
         formFieldValue={commentValue}
         onChange={setCommentValue}
       />
       {comments.map((c) => (
-          <CommentItem 
-            text={c.text}
-            commentId={c.id}
-            handleDeleteComment={() => handleDeleteComment(c.id, id)}
-          />
+        <CommentItem
+          commentText={c.text}
+          commentId={c.id}
+          handleDeleteComment={() => handleDeleteComment(c.id, postId)}
+        />
       ))}
     </Box>
   );

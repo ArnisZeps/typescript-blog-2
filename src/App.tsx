@@ -1,27 +1,14 @@
 import React, { useState } from "react";
 import "./App.css";
-import Form from "./components/organisms/form/index";
-import AddButton from "./components/atoms/addButton/index";
-import DeleteButton from "./components/atoms/deleteButton/index";
 import BlogPage from "./components/pages/BlogPage/index"
-
-interface IBlogPost {
-  id: string;
-  text: string;
-  comments: IComment[];
-}
-
-interface IComment {
-  id: string;
-  text: string;
-}
+import {IComment} from "./components/interfaces/index"
+import {IBlogPost} from "./components/interfaces/index"
 
 function App() {
   const [blogPosts, setBlogPosts] = useState<IBlogPost[]>([]);
   const [postValue, setPostValue] = useState("");
-  const [commentValue, setCommentValue] = useState("");
 
-  const handleAddComment = (postId: string) => {
+  const handleAddComment = (postId: string, commentValue: string) => {
     debugger;
     const newComment: IComment = {
       id: new Date().toISOString(),
@@ -32,7 +19,6 @@ function App() {
     if (currentPost) {
       currentPost.comments.push(newComment);
       setBlogPosts(newBlogPosts);
-      setCommentValue("");
     }
   };
   const handleCreateNewBlogPost = () => {
@@ -57,7 +43,6 @@ function App() {
         (c) => c.id !== commentId
       );
       setBlogPosts(newBlogPosts);
-      setCommentValue("");
     }
   };
 
@@ -68,34 +53,10 @@ function App() {
           handleCreateNewBlogPost={handleCreateNewBlogPost}
           handleDeleteBlogPost={handleDeleteBlogPost}
           handleDeleteComment={handleDeleteComment}
-          setCommentValue={setCommentValue}
           setPostValue={setPostValue}
           postValue={postValue}
-          commentValue={commentValue}
           blogPosts={blogPosts}
       />
-      {/* <Form
-        handleAdd={() => handleCreateNewBlogPost()}
-        formFieldValue={postValue}
-        onChange={setPostValue}
-      />
-      {blogPosts.map((bp) => (
-        <div key={bp.id}>
-          <DeleteButton handleDelete={() => handleDeleteBlogPost(bp.id)} />
-          {bp.text}
-          <Form
-            handleAdd={() => handleAddComment(bp.id)}
-            formFieldValue={commentValue}
-            onChange={setCommentValue}
-          />
-          {bp.comments.map((c) => (
-            <div key={c.id} style={{ backgroundColor: "green" }}>
-              {c.text}
-              <DeleteButton handleDelete={() => handleDeleteComment(c.id, bp.id)} />
-            </div>
-          ))}
-        </div>
-      ))} */}
     </div>
   );
 }

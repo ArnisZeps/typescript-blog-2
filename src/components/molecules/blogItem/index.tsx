@@ -4,15 +4,15 @@ import Typography from "@mui/material/Typography";
 import DeleteButton from "../../atoms/deleteButton";
 
 interface IBlogItem {
-    text: string;
+    postText: string;
     handleDelete: MouseEventHandler<HTMLButtonElement>;
 }
 
-const BlogItem: React.FC<IBlogItem> = ({handleDelete, text}) => {
+const BlogItem: React.FC<IBlogItem> = ({handleDelete, postText}) => {
   return (
     <Box>
       <Typography variant="body1" gutterBottom>
-        {text}
+        {postText}
         <DeleteButton handleDelete={handleDelete} />
       </Typography>
     </Box>
