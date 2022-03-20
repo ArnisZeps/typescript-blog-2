@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import "./App.css";
-import "./components/atoms/addButton/index"
+import Form from "./components/organisms/form/index";
 import AddButton from "./components/atoms/addButton/index";
 import DeleteButton from "./components/atoms/deleteButton/index";
+import BlogPage from "./components/pages/BlogPage/index"
 
 interface IBlogPost {
   id: string;
@@ -19,30 +20,17 @@ function App() {
   const [blogPosts, setBlogPosts] = useState<IBlogPost[]>([]);
   const [postValue, setPostValue] = useState("");
   const [commentValue, setCommentValue] = useState("");
-  const handleDeleteBlogPost = (id: string) => {
-    const newBlogPosts = blogPosts.filter((blog) => blog.id !== id);
-    setBlogPosts(newBlogPosts);
-  };
-  const handleDeleteComment = (commentId: string, postId: string) => {
 
-    const newBlogPosts = [...blogPosts]
-    const currentPost = newBlogPosts.find(bp => bp.id === postId);
-    if(currentPost){
-      currentPost.comments = currentPost.comments.filter(c => c.id !== commentId)
-      setBlogPosts(newBlogPosts);
-      setCommentValue("");
-    }
-  };
   const handleAddComment = (postId: string) => {
-    debugger
+    debugger;
     const newComment: IComment = {
       id: new Date().toISOString(),
       text: commentValue,
     };
-    const newBlogPosts = [...blogPosts]
-    const currentPost = newBlogPosts.find(bp => bp.id === postId);
-    if(currentPost){
-      currentPost.comments.push(newComment)
+    const newBlogPosts = [...blogPosts];
+    const currentPost = newBlogPosts.find((bp) => bp.id === postId);
+    if (currentPost) {
+      currentPost.comments.push(newComment);
       setBlogPosts(newBlogPosts);
       setCommentValue("");
     }
@@ -56,41 +44,58 @@ function App() {
     setBlogPosts((oldPosts) => [...oldPosts, newBlogPost]);
     setPostValue("");
   };
-  debugger;
+
+  const handleDeleteBlogPost = (id: string) => {
+    const newBlogPosts = blogPosts.filter((blog) => blog.id !== id);
+    setBlogPosts(newBlogPosts);
+  };
+  const handleDeleteComment = (commentId: string, postId: string) => {
+    const newBlogPosts = [...blogPosts];
+    const currentPost = newBlogPosts.find((bp) => bp.id === postId);
+    if (currentPost) {
+      currentPost.comments = currentPost.comments.filter(
+        (c) => c.id !== commentId
+      );
+      setBlogPosts(newBlogPosts);
+      setCommentValue("");
+    }
+  };
+
   return (
     <div className="App">
-      <AddButton handleAdd={handleCreateNewBlogPost}/>
-      <form>
-        <input
-          type="text"
-          value={postValue}
-          onChange={(e) => setPostValue(e.target.value)}
-        />
-      </form>
+      <BlogPage 
+          handleAddComment={handleAddComment}
+          handleCreateNewBlogPost={handleCreateNewBlogPost}
+          handleDeleteBlogPost={handleDeleteBlogPost}
+          handleDeleteComment={handleDeleteComment}
+          setCommentValue={setCommentValue}
+          setPostValue={setPostValue}
+          postValue={postValue}
+          commentValue={commentValue}
+          blogPosts={blogPosts}
+      />
+      {/* <Form
+        handleAdd={() => handleCreateNewBlogPost()}
+        formFieldValue={postValue}
+        onChange={setPostValue}
+      />
       {blogPosts.map((bp) => (
         <div key={bp.id}>
-          <button id="add-comment" onClick={() => handleAddComment(bp.id)}>
-            Add comment
-          </button>
+          <DeleteButton handleDelete={() => handleDeleteBlogPost(bp.id)} />
           {bp.text}
-          <button id="delete-post" onClick={() => handleDeleteBlogPost(bp.id)}>
-            X
-          </button>
-          <div style={{ backgroundColor: "red" }}>
-            <input
-              type="text"
-              value={commentValue}
-              onChange={(e) => setCommentValue(e.target.value)}
-            />
-          </div>
+          <Form
+            handleAdd={() => handleAddComment(bp.id)}
+            formFieldValue={commentValue}
+            onChange={setCommentValue}
+          />
           {bp.comments.map((c) => (
             <div key={c.id} style={{ backgroundColor: "green" }}>
               {c.text}
-              <button id="remove-comment" onClick={(e) => handleDeleteComment(c.id, bp.id)}>X</button>
+              <DeleteButton handleDelete={() => handleDeleteComment(c.id, bp.id)} />
             </div>
           ))}
         </div>
-      ))}
+      ))} */}
     </div>
   );
 }
