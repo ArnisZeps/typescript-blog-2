@@ -1,6 +1,4 @@
-.App {
-  text-align: center;
-}
+
 
 .App-logo {
   height: 40vmin;
@@ -35,4 +33,30 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.Post-Divider{
+  border-bottom-width: medium !important;
+}
+
+.Form{
+  margin-bottom: 2%;
+}
+
+.Delete-Button{
+  
+}
+
+.Blog-Page{
+  width: 75%;
+  margin-top: 3%;
+  margin-left: 3%;
+}
+
+.Blog-Form{
+  margin-bottom: 3%;
+}
+
+.Text-Field{
+  width: 85%;
 }

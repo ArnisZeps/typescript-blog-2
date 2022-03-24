@@ -25,7 +25,7 @@ const BlogPage: React.FC<IBlogPage> = ({
   blogPosts,
 }) => {
   return (
-    <Box>
+    <Box className="Blog-Page">
       {blogPosts.map((bp) => (
         <BlogForm 
           postText={bp.text}

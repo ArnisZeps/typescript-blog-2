@@ -8,7 +8,7 @@ interface IDeleteButton {
 
 const DeleteButton: React.FC <IDeleteButton> = ({handleDelete}) => {
   return (
-    <IconButton onClick={handleDelete}>
+    <IconButton onClick={handleDelete} className="Delete-Button">
       <DeleteIcon />
     </IconButton>
   );

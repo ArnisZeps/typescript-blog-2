@@ -3,7 +3,9 @@ import Box from "@mui/material/Box";
 import BlogItem from "../../molecules/blogItem/index";
 import Form from "../../organisms/form/index";
 import CommentItem from "../../molecules/commentItem/index";
+import Typography from '@mui/material/Typography';
 import { IComment } from "../../interfaces/index";
+import { Divider } from "@mui/material";
 
 interface IBlogForm {
   postText: string;
@@ -22,7 +24,6 @@ const BlogForm: React.FC<IBlogForm> = ({
   handleDeleteBlogPost,
   handleDeleteComment,
 }) => {
-  
   const [commentValue, setCommentValue] = useState("");
 
   const createComment = () => {
@@ -31,8 +32,17 @@ const BlogForm: React.FC<IBlogForm> = ({
   };
 
   return (
-    <Box key={postId}>
-      <BlogItem postText={postText} handleDelete={() => handleDeleteBlogPost(postId)} key={postId} />
+    <Box className="Blog-Form" key={postId}>
+      <Divider className="Post-Divider" />
+      <BlogItem
+        postText={postText}
+        handleDelete={() => handleDeleteBlogPost(postId)}
+        key={postId}
+      />
+      <Typography variant="caption" display="block" gutterBottom>
+        Comment Section
+      </Typography>      
+      <Divider />
       <Form
         handleAdd={() => createComment()}
         formFieldValue={commentValue}
@@ -40,11 +50,13 @@ const BlogForm: React.FC<IBlogForm> = ({
       />
       {comments.map((c) => (
         <CommentItem
+          key={c.id}
           commentText={c.text}
           commentId={c.id}
           handleDeleteComment={() => handleDeleteComment(c.id, postId)}
         />
       ))}
+      <Divider className="Post-Divider" />
     </Box>
   );
 };

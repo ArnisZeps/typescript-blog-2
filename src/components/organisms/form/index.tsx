@@ -11,11 +11,10 @@ interface IForm {
 
 const Form: React.FC<IForm> = ({handleAdd, onChange, formFieldValue}) => {
   return (
-    <Box>
+    <Box className="Form">
       <TextField
+        className="Text-Field"
         id="standard-textarea"
-        label="Multiline Placeholder"
-        placeholder="Placeholder"
         multiline
         variant="standard"
         value={formFieldValue}
