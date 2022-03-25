@@ -9,27 +9,33 @@ function App() {
   const [blogPosts, setBlogPosts] = useState<IBlogPost[]>([]);
   const [postValue, setPostValue] = useState("");
 
-  const handleAddComment = async (postId: string, commentValue: string) => {
+  React.useEffect(() => {
+     const get_posts = async () => {
+        const URL =
+        "https://4s96rnk0pb.execute-api.eu-central-1.amazonaws.com/test/post";
+        try {
+          const response = await axios.get(URL);
+          debugger;
+          setBlogPosts(response.data)
+          console.log(JSON.stringify(response.data));
+        } catch (err) {
+          console.log(err);
+        }
+     }
+     get_posts();
+  }, [blogPosts])
+
+  const handleAddComment = async (postId: string, text: string) => {
     const URL =
       "https://4s96rnk0pb.execute-api.eu-central-1.amazonaws.com/test/comment";
 
     const newComment: IComment = {
-      id: new Date().toISOString(),
-      text: commentValue,
-    };
-    const newBlogPosts = [...blogPosts];
-    const currentPost = newBlogPosts.find((bp) => bp.id === postId);
-    if (currentPost) {
-      currentPost.comments.push(newComment);
-      setBlogPosts(newBlogPosts);
-    }
-    const data = {
-      commentId: newComment.id,
-      postId: postId,
-      text: newComment.text,
+      postId,
+      commentId: new Date().toISOString(),
+      text,
     };
     try {
-      const response = await axios.post(URL, data);
+      const response = await axios.post(URL, newComment);
       console.log(response.data);
     } catch (err) {
       console.log(err);
@@ -41,18 +47,11 @@ function App() {
       "https://4s96rnk0pb.execute-api.eu-central-1.amazonaws.com/test/post";
 
     const newBlogPost: IBlogPost = {
-      id: new Date().toISOString(),
+      postId: new Date().toISOString(),
       text: postValue,
-      comments: [],
-    };
-    setBlogPosts((oldPosts) => [...oldPosts, newBlogPost]);
-    setPostValue("");
-    const data = {
-      postId: newBlogPost.id,
-      text: newBlogPost.text,
     };
     try {
-      const response = await axios.post(URL, data);
+      const response = await axios.post(URL, newBlogPost);
       console.log(response.data);
     } catch (err) {
       console.log(err);
@@ -62,8 +61,7 @@ function App() {
   const handleDeleteBlogPost = async (id: string) => {
     const URL =
       "https://4s96rnk0pb.execute-api.eu-central-1.amazonaws.com/test/post";
-    const newBlogPosts = blogPosts.filter((blog) => blog.id !== id);
-    setBlogPosts(newBlogPosts);
+
     const config = {
       data: {
         postId: id,
@@ -80,13 +78,6 @@ function App() {
   const handleDeleteComment = async (commentId: string, postId: string) => {
     const URL =
       "https://4s96rnk0pb.execute-api.eu-central-1.amazonaws.com/test/comment";
-    const newBlogPosts = [...blogPosts];
-    const currentPost = newBlogPosts.find((bp) => bp.id === postId);
-    if (currentPost) {
-      currentPost.comments = currentPost.comments.filter(
-        (c) => c.id !== commentId
-      );
-      setBlogPosts(newBlogPosts);
       const config = {
         data: {
           postId: postId,
@@ -99,7 +90,6 @@ function App() {
       } catch (err) {
         console.log(err);
       }
-    }
   };
 
   return (

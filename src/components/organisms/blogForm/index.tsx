@@ -50,10 +50,10 @@ const BlogForm: React.FC<IBlogForm> = ({
       />
       {comments.map((c) => (
         <CommentItem
-          key={c.id}
+          key={c.commentId}
           commentText={c.text}
-          commentId={c.id}
-          handleDeleteComment={() => handleDeleteComment(c.id, postId)}
+          commentId={c.commentId}
+          handleDeleteComment={() => handleDeleteComment(c.commentId, postId)}
         />
       ))}
       <Divider className="Post-Divider" />

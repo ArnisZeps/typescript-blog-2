@@ -1,10 +1,11 @@
 export interface IComment {
-  id: string;
+  postId: string;
+  commentId: string;
   text: string;
 }
 
 export interface IBlogPost {
-    id: string;
-    text: string;
-    comments: IComment[];
-  }
+  postId: string;
+  text: string;
+  comments?: IComment[];
+}

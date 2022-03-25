@@ -29,8 +29,8 @@ const BlogPage: React.FC<IBlogPage> = ({
       {blogPosts.map((bp) => (
         <BlogForm 
           postText={bp.text}
-          postId={bp.id}
-          comments={bp.comments}
+          postId={bp.postId}
+          comments={bp.comments || []}
           handleDeleteBlogPost={handleDeleteBlogPost}
           handleAddComment={handleAddComment}
           handleDeleteComment={handleDeleteComment}
