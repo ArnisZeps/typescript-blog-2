@@ -9,9 +9,41 @@ function App() {
   const [blogPosts, setBlogPosts] = useState<IBlogPost[]>([]);
   const [postValue, setPostValue] = useState("");
 
+  // React.useEffect(() => {
+  //   const get_posts = async () => {
+  //     const URL =
+  //       "https://9l3i9vm5oh.execute-api.eu-central-1.amazonaws.com/test/post";
+  //     try {
+  //       const response = await axios.get(URL);
+  //       //  debugger;
+  //       //  setBlogPosts(response.data)
+  //       console.log(JSON.stringify(response.data));
+  //     } catch (err) {
+  //       console.log(err);
+  //     }
+  //   };
+  //   get_posts();
+  // }, [blogPosts]);
+
+  const getComments = async (postId: string) => {
+    const URL =
+    "https://9l3i9vm5oh.execute-api.eu-central-1.amazonaws.com/test/comment";
+    const params = {
+      postId,
+    }
+    try {
+      const response = await axios.get(URL, {params});
+      //  debugger;
+      //  setBlogPosts(response.data)
+      console.log(JSON.stringify(response.data));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const handleAddComment = async (postId: string, commentValue: string) => {
     const URL =
-      "https://4s96rnk0pb.execute-api.eu-central-1.amazonaws.com/test/comment";
+      "https://9l3i9vm5oh.execute-api.eu-central-1.amazonaws.com/test/comment";
 
     const newComment: IComment = {
       id: new Date().toISOString(),
@@ -34,11 +66,13 @@ function App() {
     } catch (err) {
       console.log(err);
     }
+
+    getComments(postId);
   };
 
   const handleCreateNewBlogPost = async () => {
     const URL =
-      "https://4s96rnk0pb.execute-api.eu-central-1.amazonaws.com/test/post";
+      "https://9l3i9vm5oh.execute-api.eu-central-1.amazonaws.com/test/post";
 
     const newBlogPost: IBlogPost = {
       id: new Date().toISOString(),
@@ -61,7 +95,7 @@ function App() {
 
   const handleDeleteBlogPost = async (id: string) => {
     const URL =
-      "https://4s96rnk0pb.execute-api.eu-central-1.amazonaws.com/test/post";
+      "https://9l3i9vm5oh.execute-api.eu-central-1.amazonaws.com/test/post";
     const newBlogPosts = blogPosts.filter((blog) => blog.id !== id);
     setBlogPosts(newBlogPosts);
     const config = {
@@ -79,7 +113,7 @@ function App() {
 
   const handleDeleteComment = async (commentId: string, postId: string) => {
     const URL =
-      "https://4s96rnk0pb.execute-api.eu-central-1.amazonaws.com/test/comment";
+      "https://9l3i9vm5oh.execute-api.eu-central-1.amazonaws.com/test/comment";
     const newBlogPosts = [...blogPosts];
     const currentPost = newBlogPosts.find((bp) => bp.id === postId);
     if (currentPost) {
